@@ -1,19 +1,12 @@
-# 🚀 AutoFormBotCode
+# 🚀 AutoFormBotCode for RDK X5
 
-AutoFormBot의 코드 파일  
-2025.04.17 기준 RPI5 BOOKWORM 환경에서 정상 동작 확인  
+개발버전  
 
 ### 다음과 같은 기능 제공
 
-wlan0 상황에 따라 AP/STA 모드 자동 전환  
-AP모드시 유선랜 IP 0.91" OLED에서 확인 가능  
-STA모드시 무선랜 IP와 현재 연결된 SSID 0.91" OLED에서 확인 가능  
-사전 지정된 GPIO 핀맵  
-스크립트를 통한 자동 설치
-
 ---
 
-### 주의사항
+### 초기 설치 후 유선연결 설정법
 
 초기 설치시에는 유선랜 연결 필수  
 
