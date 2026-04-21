@@ -4,14 +4,24 @@ set -e
 
 LOG_TAG="[install_base]"
 SUNRISE_LIST="/etc/apt/sources.list.d/sunrise.list"
-SUNRISE_KEY="/usr/share/keyrings/sunrise.gpg"
 ROS2_LIST="/etc/apt/sources.list.d/ros2.list"
+APT_BACKUP_DIR="/etc/apt/backup_sources"
+TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
+
+backup_apt_source() {
+    local src_file="$1"
+
+    if [ -f "$src_file" ]; then
+        sudo mkdir -p "$APT_BACKUP_DIR"
+        sudo cp "$src_file" "$APT_BACKUP_DIR/$(basename "$src_file").bak.$TIMESTAMP"
+    fi
+}
 
 update_sunrise_repo() {
     if [ -f "$SUNRISE_LIST" ]; then
         echo "$LOG_TAG sunrise apt 소스를 공식 문서 기준으로 점검/수정 중..."
 
-        sudo cp "$SUNRISE_LIST" "$SUNRISE_LIST.bak.$(date +%Y%m%d_%H%M%S)"
+        backup_apt_source "$SUNRISE_LIST"
         sudo sed -i 's|archive\.sunrisepi\.tech|archive.d-robotics.cc|g' "$SUNRISE_LIST"
         sudo sed -i 's|sunrise\.horizon\.cc|archive.d-robotics.cc|g' "$SUNRISE_LIST"
 
@@ -26,7 +36,7 @@ fix_ros2_repo() {
     if [ -f "$ROS2_LIST" ]; then
         echo "$LOG_TAG ROS2 저장소를 공식 저장소로 교체 중..."
 
-        sudo cp "$ROS2_LIST" "$ROS2_LIST.bak.$(date +%Y%m%d_%H%M%S)"
+        backup_apt_source "$ROS2_LIST"
 
         # 기존 미러 제거 후 공식 ROS2 repo로 교체
         UBUNTU_CODENAME=$(lsb_release -cs 2>/dev/null || echo "jammy")
@@ -43,6 +53,12 @@ fix_ros2_repo() {
         echo "$LOG_TAG ROS2 저장소가 없어 건너뜁니다."
     fi
 }
+
+# 예전 버전 스크립트가 /etc/apt/sources.list.d 에 남긴 백업 파일 정리
+if ls /etc/apt/sources.list.d/*.bak.* >/dev/null 2>&1; then
+    sudo mkdir -p "$APT_BACKUP_DIR"
+    sudo mv /etc/apt/sources.list.d/*.bak.* "$APT_BACKUP_DIR"/
+fi
 
 update_sunrise_repo
 fix_ros2_repo
