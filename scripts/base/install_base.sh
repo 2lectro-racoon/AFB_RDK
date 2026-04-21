@@ -22,17 +22,30 @@ update_sunrise_repo() {
     fi
 }
 
-warn_ros2_repo() {
+fix_ros2_repo() {
     if [ -f "$ROS2_LIST" ]; then
-        echo "$LOG_TAG 경고: $ROS2_LIST 가 존재합니다."
-        echo "$LOG_TAG 현재 apt update 실패 원인이 ROS2 저장소일 수 있습니다."
-        echo "$LOG_TAG ros2.list 내용 확인 후 필요 시 임시 비활성화하세요:"
-        echo "  sudo mv $ROS2_LIST ${ROS2_LIST}.disabled"
+        echo "$LOG_TAG ROS2 저장소를 공식 저장소로 교체 중..."
+
+        sudo cp "$ROS2_LIST" "$ROS2_LIST.bak.$(date +%Y%m%d_%H%M%S)"
+
+        # 기존 미러 제거 후 공식 ROS2 repo로 교체
+        UBUNTU_CODENAME=$(lsb_release -cs 2>/dev/null || echo "jammy")
+        ARCH=$(dpkg --print-architecture)
+
+        echo "$LOG_TAG ROS2 GPG 키 갱신 중..."
+        sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+            -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+        echo "$LOG_TAG ROS2 공식 저장소 등록 중..."
+        echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $UBUNTU_CODENAME main" \
+            | sudo tee "$ROS2_LIST" > /dev/null
+    else
+        echo "$LOG_TAG ROS2 저장소가 없어 건너뜁니다."
     fi
 }
 
 update_sunrise_repo
-warn_ros2_repo
+fix_ros2_repo
 
 echo "$LOG_TAG apt 패키지 목록 갱신 중..."
 sudo apt update
