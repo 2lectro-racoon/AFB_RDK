@@ -10,8 +10,8 @@ echo "🧩 Setting up I2C environment and services..."
 USER_NAME=${SUDO_USER:-$(whoami)}
 USER_HOME=$(eval echo ~${USER_NAME})
 VENV_PATH="$USER_HOME/.afbvenv"
-WORK_DIR="$USER_HOME/afb_home"
-PROJECT_ROOT="$WORK_DIR/AFB_RDK"
+WORK_DIR="$USER_HOME/AFB_RDK"
+PROJECT_ROOT="$USER_HOME/AFB_RDK"
 I2C_DIR="$PROJECT_ROOT/scripts/i2c"
 I2C_MANAGER_PATH="$I2C_DIR/i2c_manager.py"
 OLED_CLEAR_PATH="$I2C_DIR/oled_clear.py"
