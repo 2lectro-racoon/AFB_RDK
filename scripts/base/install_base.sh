@@ -4,6 +4,7 @@ set -e
 
 LOG_TAG="[install_base]"
 SUNRISE_LIST="/etc/apt/sources.list.d/sunrise.list"
+SUNRISE_KEY="/usr/share/keyrings/sunrise.gpg"
 ROS2_LIST="/etc/apt/sources.list.d/ros2.list"
 APT_BACKUP_DIR="/etc/apt/backup_sources"
 TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
