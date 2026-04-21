@@ -8,9 +8,10 @@ sudo cp /etc/network/interfaces /etc/network/interfaces.bak 2>/dev/null
 # eth0 관련 설정 주석 처리
 sudo sed -i 's/^auto eth0/#auto eth0/g' /etc/network/interfaces 2>/dev/null
 sudo sed -i 's/^iface eth0/#iface eth0/g' /etc/network/interfaces 2>/dev/null
-sudo sed -i 's/^\s*address/#address/g' /etc/network/interfaces 2>/dev/null
-sudo sed -i 's/^\s*netmask/#netmask/g' /etc/network/interfaces 2>/dev/null
-sudo sed -i 's/^\s*gateway/#gateway/g' /etc/network/interfaces 2>/dev/null
+# eth0 블록 안에서만 address/netmask/gateway 주석 처리
+sudo sed -i '/iface eth0/,/auto/{s/^\s*address/#address/g}' /etc/network/interfaces 2>/dev/null
+sudo sed -i '/iface eth0/,/auto/{s/^\s*netmask/#netmask/g}' /etc/network/interfaces 2>/dev/null
+sudo sed -i '/iface eth0/,/auto/{s/^\s*gateway/#gateway/g}' /etc/network/interfaces 2>/dev/null
 
 echo "[2] NetworkManager 설정 변경..."
 
