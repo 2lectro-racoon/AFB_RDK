@@ -76,10 +76,8 @@ pip install \
   adafruit-circuitpython-ina219 \
   adafruit-circuitpython-vl53l0x \
   adafruit-circuitpython-vl53l1x \
-#   adafruit-circuitpython-mpu6050 \
   pillow \
   netifaces \
-  rpi-lgpio
 
 # i2c_manager 서비스 파일 생성
 PYTHON_PATH="$VENV_PATH/bin/python3"
