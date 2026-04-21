@@ -1,3 +1,5 @@
+sudo usermod -aG gpio afb
+
 if [ -d ".afbvenv" ]; then
     echo "🔁 Virtual environment '.afbvenv' already exists. Activating..."
 else
@@ -5,7 +7,6 @@ else
     python -m venv ~/.afbvenv
 fi
 
-sudo apt install -y python3-lgpio
-pip3 install spidev
+pip3 install spidev lgpio
 
 deactivate

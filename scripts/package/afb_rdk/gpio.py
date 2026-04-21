@@ -21,7 +21,7 @@ from . import _spi_bus
 # NOTE:
 # - This value must match the actual host-side GPIO line used on RDK X5.
 # - Update this if the NRST wiring is moved to a different header pin/line.
-NRST_GPIO = 23
+NRST_GPIO = 382
 RESET_PULSE = 0.20      # Reset low time (seconds)
 POST_RESET_DELAY = 0.20 # Time to wait after releasing reset (seconds)
 # ===================================================
