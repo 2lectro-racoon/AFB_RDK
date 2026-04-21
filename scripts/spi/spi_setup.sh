@@ -5,6 +5,7 @@ else
     python -m venv ~/.afbvenv
 fi
 
+sudo apt install -y python3-lgpio
 pip3 install spidev
 
 deactivate
