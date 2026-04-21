@@ -1,0 +1,18 @@
+# venv 
+AutoFormBot_venv/
+
+# STA / AP server
+webserver/
+
+# vscode setting
+.vscode/
+
+# OS file sys
+.DS_Store
+
+# log
+install/install_log_*.log
+
+# calib.json
+scrpits/package/afb2/steering_center.json
+scrpits/package/afb1/steering_center.json
