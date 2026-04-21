@@ -106,6 +106,20 @@ else
     echo "[4/5] SSH 키 복사는 건너뜁니다."
 fi
 
+AUTOLOGIN_FILE="/etc/lightdm/lightdm.conf.d/22-hobot-autologin.conf"
+if [ -f "$AUTOLOGIN_FILE" ]; then
+    echo "[4/5] LightDM 자동로그인 사용자를 $TARGET_USER 로 변경 중..."
+    cp "$AUTOLOGIN_FILE" "$AUTOLOGIN_FILE.bak.$(date +%Y%m%d_%H%M%S)"
+
+    if grep -q '^autologin-user=' "$AUTOLOGIN_FILE"; then
+        sed -i "s/^autologin-user=.*/autologin-user=$TARGET_USER/" "$AUTOLOGIN_FILE"
+    else
+        printf '\nautologin-user=%s\n' "$TARGET_USER" >> "$AUTOLOGIN_FILE"
+    fi
+else
+    echo "[4/5] LightDM 자동로그인 설정 파일이 없어 건너뜁니다."
+fi
+
 # 5) 안내
 cat <<EOF
 [5/5] 완료
@@ -122,9 +136,12 @@ cat <<EOF
 2. SSH 재접속 테스트
    ssh $TARGET_USER@<현재 IP>
 
-3. 정상 접속 확인 후, 기존 사용자 삭제 여부 결정
+3. GUI를 사용하는 경우 재부팅 후 자동로그인 계정 확인
+   /etc/lightdm/lightdm.conf.d/22-hobot-autologin.conf
+
+4. 정상 접속 확인 후, 기존 사용자 삭제 여부 결정
    sudo deluser --remove-home $CURRENT_USER
 
-4. 호스트네임 완전 반영을 위해 재부팅
+5. 호스트네임/자동로그인 완전 반영을 위해 재부팅
    sudo reboot
 EOF
